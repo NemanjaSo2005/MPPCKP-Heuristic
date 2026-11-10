@@ -25,3 +25,6 @@ Had to go for a while, but I came up with a way to store data locally in txt fil
 - **Line 2:** [precedence 1] [presedence 2] ... [last precedence]
 
 Now I can download the MineLib and start parsing it
+
+## 16:05
+Finished download script, writing parser.
