@@ -26,3 +26,4 @@ venv/
 
 # Test data
 data/MineLib
+data/ExtractedMineLib

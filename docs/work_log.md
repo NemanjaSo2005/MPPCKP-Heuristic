@@ -28,3 +28,7 @@ Now I can download the MineLib and start parsing it
 
 ## 16:05
 Finished download script, writing parser.
+
+## 18:57
+
+Wrote the parser (took a while as I had classes in-between)
