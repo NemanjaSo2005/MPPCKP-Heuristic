@@ -1,0 +1,25 @@
+# CLion / IntelliJ
+.idea/
+
+# CMake build directories
+cmake-build-*/
+
+# Compiled executables
+main
+*.exe
+
+# Compiled object files
+*.o
+*.obj
+
+# Libraries
+*.a
+*.so
+*.dll
+*.dylib
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
