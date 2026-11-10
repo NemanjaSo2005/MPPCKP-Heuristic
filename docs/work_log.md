@@ -1,4 +1,4 @@
-## 11th November 2026
+## 10th November 2026
 
 ### 10:00 - 11:36
 
