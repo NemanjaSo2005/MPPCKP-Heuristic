@@ -3,6 +3,7 @@
 
 # CMake build directories
 cmake-build-*/
+build/
 
 # Compiled executables
 main
