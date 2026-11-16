@@ -1,62 +1,60 @@
 #include <ilcplex/ilocplex.h>
 #include <iostream>
+#include <filesystem>
+
+#include "src/Instance.h"
 
 ILOSTLBEGIN
 
-int main() {
-    IloEnv env;
+static void invalidUsage(const int argc, char** argv) {
+    cerr << "Usage: " << argv[0] << " CPLEX <path> | " << endl;
+    //cerr << "       " << argv[0] << " HEURISTIC ([filename] | 'all') | " << endl;
+    exit(1);
+}
 
-    try {
-        IloModel model(env);
+int main(int argc, char** argv) {
+    if (argc < 2) {
+        invalidUsage(argc, argv);
+    }
+    if (std::string(argv[1]) == "CPLEX") {
+        if (argc != 3) {
+            invalidUsage(argc, argv);
+        }
+        auto filePath = std::string(argv[2]);
 
-        const int N = 2000;
-
-        // 2000 binary variables
-        IloBoolVarArray x(env, N);
-
-        // Objective: maximize the number of selected variables
-        IloExpr objective(env);
-
-        for (int i = 0; i < N; i++) {
-            objective += x[i];
+        if (!std::filesystem::exists(filePath)) {
+            cerr << "No such file or directory: " << filePath << endl;
+            exit(1);
         }
 
-        model.add(IloMaximize(env, objective));
-        objective.end();
+        vector<string> files;
 
-        // 2000 constraints
-        for (int i = 0; i < N; i++) {
-            model.add(x[i] + x[(i + 1) % N] <= 1);
+        if (std::filesystem::is_directory(filePath)) {
+            try {
+                for (const auto& entry : std::filesystem::directory_iterator(filePath)) {
+                    if (entry.is_regular_file()) {
+                        files.push_back(entry.path().string());
+                    }
+                }
+            } catch (const std::filesystem::filesystem_error& e) {
+                std::cerr << "Filesystem error: " << e.what() << '\n';
+                exit(1);
+            }
+        }
+        else {
+            files.push_back(filePath);
         }
 
-        // Solve
-        IloCplex cplex(model);
-
-        cplex.setOut(env.out());
-
-        std::cout << "Variables: " << N << std::endl;
-        std::cout << "Constraints: " << N << std::endl;
-
-        if (cplex.solve()) {
-            std::cout << "\nSolution found!" << std::endl;
-            std::cout << "Status: " << cplex.getStatus() << std::endl;
-            std::cout << "Objective value: "
-                      << cplex.getObjValue() << std::endl;
-            std::cout << "Number of variables: "
-                      << N << std::endl;
-            std::cout << "Number of constraints: "
-                      << N << std::endl;
-        } else {
-            std::cout << "No solution found." << std::endl;
+        for (const auto &file : files) {
+            cout << "Running CPLEX on file " << file << endl;
+            Instance inst(file);
+            cout<<inst.getNumBlocks()<<" "<<inst.getNumPeriods()<<endl;
         }
 
-    } catch (IloException& e) {
-        std::cerr << "CPLEX exception: " << e << std::endl;
-    } catch (...) {
-        std::cerr << "Unknown exception." << std::endl;
+
+        return 0;
     }
 
-    env.end();
-
-    return 0;
+    cerr << "NOT YET IMPLEMENTED" << endl;
+    return 1;
 }
