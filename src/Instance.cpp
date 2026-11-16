@@ -1,6 +1,9 @@
 #include "Instance.h"
 
 #include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 
 Instance::Instance(const std::string &fileName) {
     std::ifstream ifs(fileName.c_str());
@@ -8,6 +11,9 @@ Instance::Instance(const std::string &fileName) {
         std::cerr << "Error opening file " << fileName << std::endl;
         return;
     }
+
+    name = std::filesystem::path(fileName).filename().string();
+    name = name.substr(0, name.rfind('.'));
 
     ifs >> numBlocks >> numPeriods >> discountRate;
     periodCapacity.resize(numPeriods);
@@ -29,6 +35,10 @@ Instance::Instance(const std::string &fileName) {
     }
 
     ifs.close();
+}
+
+std::string Instance::getName() const {
+    return name;
 }
 
 int Instance::getNumBlocks() const {

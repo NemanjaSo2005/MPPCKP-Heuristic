@@ -1,8 +1,6 @@
 #ifndef MPPCKP_HEURISTIC_INSTANCE_H
 #define MPPCKP_HEURISTIC_INSTANCE_H
 
-#include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -10,6 +8,7 @@ class Instance {
     public:
     explicit Instance(const std::string& fileName);
 
+    std::string getName() const;
     int getNumBlocks() const;
     int getNumPeriods() const;
     double getDiscountRate() const;
@@ -28,6 +27,7 @@ class Instance {
         std::vector<int> precedences;
     };
 
+    std::string name;
     int numBlocks{};
     int numPeriods{};
     double discountRate{};
