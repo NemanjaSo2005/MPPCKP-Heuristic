@@ -17,6 +17,8 @@ set(CPLEX_LIB_FORMAT "static_pic")
 # Your executable
 add_executable(MPPCKP_Heuristic
         main.cpp
+        src/Instance.cpp
+        src/Instance.h
 )
 
 # Include directories

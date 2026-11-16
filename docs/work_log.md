@@ -52,3 +52,7 @@ While generating more mining instances is a possibility, I would rather first ex
 ## 13th November 2026
 
 Added CPLEX and changed main.cpp to test if CPLEX is added properly.
+
+## 14th November 2026
+
+Busy with other stuff, but doing project from time to time. Adding Instance class to read problem instances.
