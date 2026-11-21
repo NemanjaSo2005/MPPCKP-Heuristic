@@ -1,14 +1,15 @@
-#include <ilcplex/ilocplex.h>
 #include <iostream>
 #include <filesystem>
 
+#include "src/CplexEncoder.h"
 #include "src/Instance.h"
 
-ILOSTLBEGIN
+#define CPLEX_VARIABLE_LIMIT 1'000'000
+#define MAX_CPLEX_TIME 900
 
 static void invalidUsage(const int argc, char** argv) {
-    cerr << "Usage: " << argv[0] << " CPLEX <path> | " << endl;
-    //cerr << "       " << argv[0] << " HEURISTIC ([filename] | 'all') | " << endl;
+    std::cerr << "Usage: " << argv[0] << " CPLEX <path> | " << std::endl;
+    //std::cerr << "       " << argv[0] << " HEURISTIC ([filename] | 'all') | " << std::endl;
     exit(1);
 }
 
@@ -23,11 +24,11 @@ int main(int argc, char** argv) {
         auto filePath = std::string(argv[2]);
 
         if (!std::filesystem::exists(filePath)) {
-            cerr << "No such file or directory: " << filePath << endl;
+            std::cerr << "No such file or directory: " << filePath << std::endl;
             exit(1);
         }
 
-        vector<string> files;
+        std::vector<std::string> files;
 
         if (std::filesystem::is_directory(filePath)) {
             try {
@@ -46,15 +47,19 @@ int main(int argc, char** argv) {
         }
 
         for (const auto &file : files) {
-            cout << "Running CPLEX on file " << file << endl;
+            std::cout << "Running CPLEX on file " << file << std::endl;
             Instance inst(file);
-            cout<<inst.getNumBlocks()<<" "<<inst.getNumPeriods()<<endl;
+            if (inst.getNumBlocks() * static_cast<long long>(inst.getNumPeriods()) > CPLEX_VARIABLE_LIMIT) {
+                std::cout << "Instance too big to be ran on CPLEX" << std::endl;
+                continue;
+            }
+            CplexEncoder::runCplex(inst, "./results/cplex/" + inst.getName(), MAX_CPLEX_TIME);
         }
 
 
         return 0;
     }
 
-    cerr << "NOT YET IMPLEMENTED" << endl;
+    std::cerr << "NOT YET IMPLEMENTED" << std::endl;
     return 1;
 }

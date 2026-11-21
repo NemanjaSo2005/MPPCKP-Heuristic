@@ -19,6 +19,8 @@ add_executable(MPPCKP_Heuristic
         main.cpp
         src/Instance.cpp
         src/Instance.h
+        src/CplexEncoder.cpp
+        src/CplexEncoder.h
 )
 
 # Include directories

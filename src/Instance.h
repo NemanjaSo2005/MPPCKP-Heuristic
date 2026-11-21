@@ -13,9 +13,9 @@ class Instance {
     int getNumPeriods() const;
     double getDiscountRate() const;
     int getPeriodCapacity(int period) const;
-    std::vector<int> getPeriods();
+    std::vector<int> getPeriods() const;
     int getBlockWeight(int block) const;
-    std::vector<int> getBlockPrecedences(int block);
+    std::vector<int> getBlockPrecedences(int block) const;
     double getBlockProfitInPeriod(int block, int period) const;
 
     private:

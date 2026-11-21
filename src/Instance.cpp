@@ -61,7 +61,7 @@ int Instance::getPeriodCapacity(int period) const {
     return periodCapacity[period];
 }
 
-std::vector<int> Instance::getPeriods() {
+std::vector<int> Instance::getPeriods() const {
     return periodCapacity;
 }
 
@@ -73,7 +73,7 @@ int Instance::getBlockWeight(int block) const {
     return blocks[block].weight;
 }
 
-std::vector<int> Instance::getBlockPrecedences(int block) {
+std::vector<int> Instance::getBlockPrecedences(int block) const {
     if (block >= blocks.size()) {
         std::cerr << "Error, block " << block << " does not exist!" << std::endl;
         return std::vector<int>();
